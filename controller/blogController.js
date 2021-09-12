@@ -1,5 +1,5 @@
 const Blog=require('../models/blogs');
-
+const fs=require('fs');
 const blog_index=(req,res)=>{
     let page=1;
     if(req.query.page){
@@ -45,7 +45,12 @@ const blog_singleblock=(req,res)=>{
     })
 }
 const blog_delete=(req,res)=>{
-    Blog.findByIdAndDelete(req.params.id)
+    Blog.findById(req.params.id).then(data=>{
+        fs.unlink('./public/uploads/'+data.image,err=>{
+            console.log(err)
+        })
+        return Blog.findByIdAndDelete(req.params.id);
+    })
     .then(result=>{
         res.json({
             redirect:'/'
@@ -65,4 +70,26 @@ const blog_edit=(req,res)=>{
         res.status(404).render('404',{title : '404 Page'});
     })
 }
-module.exports={blog_index,blog_create,blog_insert,blog_singleblock,blog_delete,blog_edit}
+const blog_update=(req,res)=>{
+    Blog.findById(req.body.id).then(data=>{
+        data.title=req.body.title;
+        data.snippets=req.body.snippets;
+        data.body=req.body.body;
+        if(req.file){
+            fs.unlink('./public/uploads/'+data.image,(err)=>{
+                console.log(err)
+            })
+            data.image=req.file.filename;
+        }
+        return data.save();
+
+    })
+    .then((data)=>{
+        res.redirect('/');
+    })
+    .catch(err=>{
+        console.log(err)
+    })
+
+}
+module.exports={blog_index,blog_create,blog_insert,blog_singleblock,blog_delete,blog_edit,blog_update}
