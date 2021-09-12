@@ -1,0 +1,58 @@
+<%- include('./partials/head.ejs') %>
+<body>
+  <%- include('./partials/nav.ejs') %>
+
+      <div class="content">
+        <h2>All Blogs</h2>
+        <%if(blogs.length > 0) {%>
+            <%for(var i=0;i < blogs.length;i++){%>
+             <a href='/blogs/<%=blogs[i]['_id'] %>'>
+            <div class="blogs">
+            <h3><%= blogs[i].title %></h3>
+            <p><%= blogs[i].snippets %></p>
+            </a>
+          </div>
+            <%}%>
+            <div>
+              <button onclick="previous()">Previous</button>
+              <button onclick="next()">Next</button>
+            </div>
+        <% } else { %>
+        <h3>There are no blogs</h3>
+        <% } %>
+        </div>
+<%- include('./partials/footer.ejs') %>
+<script>
+  function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,    
+    function(m,key,value) {
+      vars[key] = value;
+    });
+    return vars;
+  }
+  var page = getUrlVars()["page"];
+  function next(){
+  if(page){
+    page=parseInt(page) + 1;
+  window.location.href='blogs?page='+page;
+  }
+  else{
+    window.location.href='blogs?page=2';
+  }
+  }
+  function previous(){
+  if(page=='1'){
+  }
+  else if(page){
+    page=parseInt(page) - 1;
+  window.location.href='blogs?page='+page;
+  }
+  else{
+    // window.location.href='blogs?page=2';
+  }
+  }
+</script>
+</body>
+
+</html>
