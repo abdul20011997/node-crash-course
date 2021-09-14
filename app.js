@@ -3,6 +3,8 @@ const mongoose=require('mongoose');
 const multer=require('multer');
 const app=express();
 const blogRoutes=require('./routes/blogRoutes');
+const loginRoutes=require('./routes/loginRoutes');
+
 const storage=multer.diskStorage({
     destination:(req,file,cb)=>{
         cb(null,'public/uploads');
@@ -43,6 +45,7 @@ app.get('/',(req,res)=>{
   res.redirect('/blogs')
 
 })
+app.use(loginRoutes);
 app.use(blogRoutes);
 app.get('/about',(req,res)=>{
     res.render('about',{title : 'About Page'})
