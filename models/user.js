@@ -5,15 +5,17 @@ const Schema=mongoose.Schema;
 const userSchema=new Schema({
     name:{
         type:String,
-        required:true
+        required:[true,'Name is Required'],
+        minlength:[6,'Name must be 6 letters']
     },
     email:{
         type:String,
-        required:true
+        required:[true,'Email is Required'],
+        unique:true
     },
     password:{
         type:String,
-        required:true
+        required:[true,'Password is Required']
     }
 },{timestamps:true})
 const User=mongoose.model('User',userSchema)

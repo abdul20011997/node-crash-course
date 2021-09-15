@@ -8,6 +8,7 @@ const blog_index=(req,res)=>{
     const limit=2;
     Blog.find().sort({createdAt:-1}).limit(limit).skip((page - 1) * limit)
     .then(result=>{
+        // console.log(req.cookies.token)
     res.render('index',{title : 'Home Page',blogs:result});
     })
     .catch(err=>{

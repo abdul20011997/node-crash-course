@@ -1,5 +1,19 @@
 const User=require('../models/user');
 const bcrypt=require('bcrypt');
+const jwt=require('jsonwebtoken');
+const validateerr=(err)=>{
+    console.log(err.errors['name'].message);
+    let newerrors={name:'',email:'',password:''}
+    if(err.errors['name']){
+        newerrors['name']=err.errors['name'].message;
+        
+    }
+    if(err.errors['email']){
+        newerrors['email']=err.errors['email'].message
+    }
+
+    return newerrors;
+}
 const blog_login=(req,res)=>{
     res.render('login',{title:'Login'})
 }
@@ -29,6 +43,10 @@ const blog_insertuser=(req,res)=>{
             return user.save();
         }).then(data=>{
             return res.redirect('/login')
+        }).catch(err=>{
+            var errors=validateerr(err);
+        
+            
         })
     })
     .catch(err=>{
@@ -49,6 +67,8 @@ const login_insertuser=(req,res)=>{
             if(!result){
                return console.log('password not match') 
             }
+            const token=jwt.sign({userid : user._id},'secret',{expiresIn: 60 * 60 * 24 * 3});
+            res.cookie('token',token,{maxAge : 3 * 24 * 3600000,httpOnly : true});
             return res.redirect('/');
         })
     })
@@ -56,4 +76,8 @@ const login_insertuser=(req,res)=>{
         console.log(err)
     })
 }
-module.exports={blog_login,blog_register,blog_insertuser,login_insertuser};
+const login_logout=(req,res,next)=>{
+    res.cookie('token','',{maxAge:1});
+    return res.redirect('/');
+}
+module.exports={blog_login,blog_register,blog_insertuser,login_insertuser,login_logout};

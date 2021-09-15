@@ -1,6 +1,7 @@
 const express=require('express');
 const mongoose=require('mongoose');
 const multer=require('multer');
+const cookieParser=require('cookie-parser');
 const app=express();
 const blogRoutes=require('./routes/blogRoutes');
 const loginRoutes=require('./routes/loginRoutes');
@@ -39,7 +40,7 @@ app.set('view engine','ejs');
 app.use(express.urlencoded({extended :true}));
 app.use(multer({storage:storage,fileFilter : fileFilter}).single('image'))
 app.use(express.static('public'));
-
+app.use(cookieParser());
 
 app.get('/',(req,res)=>{
   res.redirect('/blogs')
