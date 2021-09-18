@@ -6,9 +6,8 @@ const blog_index=(req,res)=>{
      page=parseInt(req.query.page);
     }
     const limit=2;
-    Blog.find().sort({createdAt:-1}).limit(limit).skip((page - 1) * limit)
+    Blog.find().populate('user').sort({createdAt:-1}).limit(limit).skip((page - 1) * limit)
     .then(result=>{
-        // console.log(req.cookies.token)
     res.render('index',{title : 'Home Page',blogs:result});
     })
     .catch(err=>{
@@ -23,7 +22,8 @@ const blog_insert=(req,res)=>{
         title:req.body.title,
         snippets:req.body.snippets,
         body:req.body.body,
-        image:req.file.filename
+        image:req.file.filename,
+           user:req.user
     }
     const blog=new Blog(data);
     blog.save()
@@ -36,9 +36,9 @@ const blog_insert=(req,res)=>{
 }
 const blog_singleblock=(req,res)=>{
     console.log(req.params.id);
-    Blog.findById(req.params.id)
+    Blog.findById(req.params.id).populate('user')
     .then(result=>{
-        res.render('detail',{title:'Blog Detail',blog:result});
+        res.render('detail',{title:'Blog Detail',blog:result,userId:req.user});
     })
     .catch(err=>{
         // console.log(err)
@@ -93,4 +93,19 @@ const blog_update=(req,res)=>{
     })
 
 }
-module.exports={blog_index,blog_create,blog_insert,blog_singleblock,blog_delete,blog_edit,blog_update}
+const blog_search=(req,res)=>{
+    console.log(req.body);
+    let page=1;
+    if(req.query.page){
+     page=parseInt(req.query.page);
+    }
+    const limit=2;
+    Blog.find({title:{$regex:req.body.search,$options:'i'}}).populate('user').sort({createdAt:-1}).limit(limit).skip((page - 1) * limit)
+    .then(result=>{
+    res.render('index',{title : 'Home Page',blogs:result});
+    })
+    .catch(err=>{
+        console.log(err);
+    })
+}
+module.exports={blog_index,blog_create,blog_insert,blog_singleblock,blog_delete,blog_edit,blog_update,blog_search}

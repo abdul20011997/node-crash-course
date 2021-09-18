@@ -44,6 +44,7 @@ app.use(multer({storage:storage,fileFilter : fileFilter}).single('image'))
 app.use(express.static('public'));
 app.use(cookieParser());
 app.get('*',validateuser);
+app.post('*',validateuser);
 app.get('/',(req,res)=>{
   res.redirect('/blogs')
 

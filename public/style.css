@@ -7,11 +7,13 @@
           max-width: 1200px;
         }
         .blogs{
-          border-left: 8px solid #d43333;
-          padding: 8px;
+          border: 2px solid #d43333;
+          border-radius: 5px;
+          width: 50%;
+          padding: 12px;
           margin: 15px 0px;
         }
-        p, h1, h2, h3, a, ul{
+        p, h1, h2, h3,h4, a, ul{
           margin: 0;
           padding: 0;
           text-decoration: none;
@@ -50,7 +52,7 @@
         h2{
           margin-bottom: 40px;
         }
-        h3{
+        h3,h4{
           text-transform: capitalize;
           margin-bottom: 8px;
         }

@@ -3,13 +3,15 @@
   <%- include('./partials/nav.ejs') %>
 
       <div class="content">
-        <h2>All Blogs</h2>
+        <h2 style="margin-bottom:10px;">All Blogs</h2>
+        <div><form method="POST" action="/blogs/search"><input type="text" name="search" style="padding: 8px;"/><button style="margin:0px 10px;"class='deletebtn'>Search</button></form></div>
         <%if(blogs.length > 0) {%>
             <%for(var i=0;i < blogs.length;i++){%>
              <a href='/blogs/<%=blogs[i]['_id'] %>'>
             <div class="blogs">
             <h3><%= blogs[i].title %></h3>
-            <p><%= blogs[i].snippets %></p>
+            <h4><%= blogs[i].snippets %></h4>
+            <p>Created by <span style="color:#d8b067"><%= blogs[i].user.name %></span></p>
             </a>
           </div>
             <%}%>

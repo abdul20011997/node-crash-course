@@ -10,5 +10,6 @@ router.post('/blogs/update',isauth,blogController.blog_update);
 router.post('/blogs',isauth,blogController.blog_insert);
 router.get('/blogs/:id',isauth,blogController.blog_singleblock)
 router.delete('/blogs/:id',isauth,blogController.blog_delete)
+router.post('/blogs/search',isauth,blogController.blog_search)
 
 module.exports=router;

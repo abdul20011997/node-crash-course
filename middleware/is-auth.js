@@ -12,6 +12,7 @@ const validateToken=(req,res,next)=>{
             }
             else{
                 console.log(data);
+                req.user=data.userid;
                 next();
             }
         })
